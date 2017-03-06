@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\TicketFormRequest;
-
+use App\ticket;
 class TicketsController extends Controller
 {
     /**
@@ -14,7 +14,9 @@ class TicketsController extends Controller
      */
     public function index()
     {
-        //
+        $tickets = Ticket::all();
+
+        return view('tickets.index')->with('tickets', $tickets);
     }
 
     /**
@@ -35,7 +37,16 @@ class TicketsController extends Controller
      */
     public function store(TicketFormRequest $request)
     {
-        return $request->all();
+        $slug = uniqid();
+        $ticket = new ticket(array(
+            'title' => $request->get('title'),
+            'content' => $request->get('content'),
+            'slug' => $slug
+            ));
+
+        $ticket->save();
+
+        return redirect('/contact')->with('status','your ticket has been created! its unique id is: '.$slug);
     }
 
     /**
