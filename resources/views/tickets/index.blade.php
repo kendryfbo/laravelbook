@@ -7,6 +7,11 @@
                 <div class="panel-heading">
                     <h2> Tickets </h2>
                 </div>
+                @if (session('status'))
+                    <div class="alert alert-success">
+                        {{ session('status') }}
+                    </div>
+                @endif
                 @if ($tickets->isEmpty())
                     <p> There is no ticket.</p>
                 @else
@@ -22,7 +27,11 @@
                             @foreach($tickets as $ticket)
                                 <tr>
                                     <td>{!! $ticket->id !!} </td>
-                                    <td>{!! $ticket->title !!}</td>
+                                    <td>
+                                        <a href="{!! action('TicketsController@show', $ticket->slug) !!}">
+                                            {!! $ticket->title !!} 
+                                        </a>
+                                    </td>
                                     <td>{!! $ticket->status ? 'Pending' : 'Answered' !!}</td>
                                 </tr>
                             @endforeach
